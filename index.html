@@ -124,15 +124,17 @@
             }
           };
 
-          const getSortedNumbers = () => {
-            const numbers = Array.from({ length: 50 }, (_, i) => i + 1);
-            return numbers.sort((a, b) => {
-              const usageA = numberUsage[a] || 0;
-              const usageB = numberUsage[b] || 0;
-              if (usageB !== usageA) return usageB - usageA;
-              return a - b;
-            });
+          const getButtonColor = (num) => {
+            const usage = numberUsage[num] || 0;
+            if (usage === 0) return 'from-gray-400 to-gray-500';
+            if (usage <= 2) return 'from-blue-400 to-blue-500';
+            if (usage <= 5) return 'from-green-400 to-green-500';
+            if (usage <= 10) return 'from-yellow-400 to-yellow-500';
+            if (usage <= 20) return 'from-orange-400 to-orange-500';
+            return 'from-red-400 to-red-500';
           };
+
+          const numbers = Array.from({ length: 50 }, (_, i) => i + 1);
 
           const addNumber = (num) => {
             setTotal(prev => prev + num);
@@ -169,7 +171,7 @@
             setCurrentHistory([]);
           };
 
-          const sortedNumbers = getSortedNumbers();
+
 
           return (
             <div className="h-screen w-screen bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center overflow-hidden">
@@ -248,11 +250,11 @@
                 ) : (
                   <div className="flex-1 bg-white rounded-xl shadow-lg p-2 overflow-hidden">
                     <div className="h-full grid grid-cols-10 gap-1.5">
-                      {sortedNumbers.map(num => (
+                      {numbers.map(num => (
                         <button
                           key={num}
                           onClick={() => addNumber(num)}
-                          className="bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg font-bold text-base shadow-md transition-all active:scale-95 flex items-center justify-center"
+                          className={`bg-gradient-to-br ${getButtonColor(num)} hover:brightness-110 text-white rounded-lg font-bold text-base shadow-md transition-all active:scale-95 flex items-center justify-center`}
                         >
                           {num}
                         </button>
